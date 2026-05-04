@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}{{ action }}食譜 - 食譜收藏夾{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="card-title fw-bold mb-4">{{ action }}食譜</h2>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="title" class="form-label fw-bold">食譜名稱 *</label>
+                        <input type="text" class="form-control" id="title" name="title" value="{{ recipe.title if recipe else '' }}" required placeholder="例如：番茄炒蛋">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="ingredients" class="form-label fw-bold">所需食材 *</label>
+                        <textarea class="form-control" id="ingredients" name="ingredients" rows="5" required placeholder="每樣食材換一行，例如：&#10;番茄 2 顆&#10;雞蛋 3 顆">{{ recipe.ingredients if recipe else '' }}</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="instructions" class="form-label fw-bold">料理步驟 *</label>
+                        <textarea class="form-control" id="instructions" name="instructions" rows="8" required placeholder="1. 先將雞蛋打散...&#10;2. 番茄切塊...">{{ recipe.instructions if recipe else '' }}</textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="image_path" class="form-label fw-bold">照片路徑 (選填)</label>
+                        <input type="text" class="form-control" id="image_path" name="image_path" value="{{ recipe.image_path if recipe else '' }}" placeholder="圖片網址或本地路徑">
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">儲存食譜</button>
+                        <a href="{{ request.referrer or url_for('recipe.list_recipes') }}" class="btn btn-light">取消</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

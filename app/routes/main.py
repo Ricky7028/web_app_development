@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from app.models.recipe import Recipe
 
 main_bp = Blueprint('main', __name__)
 
@@ -6,10 +7,9 @@ main_bp = Blueprint('main', __name__)
 def index():
     """
     首頁：顯示每日推薦食譜。
-    1. 從資料庫隨機取得一個食譜。
-    2. 渲染 index.html 模板。
     """
-    pass
+    daily_recipe = Recipe.get_random()
+    return render_template('index.html', recipe=daily_recipe)
 
 @main_bp.route('/recommend')
 def recommend():

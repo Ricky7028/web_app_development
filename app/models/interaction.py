@@ -1,26 +1,32 @@
 from datetime import datetime
+from app import db
 
-class Interaction:
-    """
-    使用者互動記錄模型
-    """
-    def __init__(self, id=None, recipe_id=None, interaction_type=None, created_at=None):
-        self.id = id
-        self.recipe_id = recipe_id
-        self.interaction_type = interaction_type
-        self.created_at = created_at or datetime.utcnow()
+class Interaction(db.Model):
+    __tablename__ = 'interactions'
 
-    @staticmethod
-    def log(db_session, recipe_id, interaction_type):
-        """記錄一次互動 (瀏覽、搜尋等)"""
-        # new_log = Interaction(recipe_id=recipe_id, interaction_type=interaction_type)
-        # db_session.add(new_log)
-        # db_session.commit()
-        # return new_log
-        pass
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id', ondelete='CASCADE'))
+    interaction_type = db.Column(db.String(20), nullable=False) # 'view', 'search', 'like'
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    @staticmethod
-    def get_by_recipe(db_session, recipe_id):
-        """取得特定食譜的所有互動紀錄"""
-        # return db_session.query(Interaction).filter_by(recipe_id=recipe_id).all()
-        pass
+    def __repr__(self):
+        return f'<Interaction {self.interaction_type} for recipe {self.recipe_id}>'
+
+    @classmethod
+    def log(cls, recipe_id, interaction_type):
+        """記錄使用者行為"""
+        try:
+            new_interaction = cls(recipe_id=recipe_id, interaction_type=interaction_type)
+            db.session.add(new_interaction)
+            db.session.commit()
+            return new_interaction
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error logging interaction: {e}")
+            return None
+
+    @classmethod
+    def get_stats(cls):
+        """取得統計數據 (進階推薦用)"""
+        # 這裡可以實作更複雜的查詢
+        return cls.query.all()

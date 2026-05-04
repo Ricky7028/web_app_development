@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row align-items-center py-5">
+    <div class="col-md-6">
+        <h1 class="display-4 fw-bold mb-4">今天想吃什麼？</h1>
+        <p class="lead text-muted mb-4">收藏您的私房料理，根據現有食材推薦食譜，解決您的選擇障礙。</p>
+        <form action="{{ url_for('recipe.list_recipes') }}" method="GET" class="d-flex mb-3">
+            <input type="text" name="q" class="form-control form-control-lg me-2" placeholder="搜尋食譜名稱或食材...">
+            <button type="submit" class="btn btn-primary btn-lg px-4">搜尋</button>
+        </form>
+    </div>
+    <div class="col-md-6">
+        {% if recipe %}
+        <div class="card p-2">
+            <div class="card-body">
+                <span class="badge bg-warning text-dark mb-2">🌟 每日推薦</span>
+                <h3 class="card-title">{{ recipe.title }}</h3>
+                <p class="card-text text-truncate" style="max-height: 3rem;">{{ recipe.ingredients }}</p>
+                <a href="{{ url_for('recipe.recipe_detail', recipe_id=recipe.id) }}" class="btn btn-outline-primary">查看詳情</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="card p-5 text-center bg-light">
+            <p class="text-muted">目前還沒有食譜，快去新增第一道吧！</p>
+            <a href="{{ url_for('recipe.add_recipe') }}" class="btn btn-primary">新增食譜</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 p-3 text-center">
+            <h3>📖 數位收藏</h3>
+            <p>集中管理所有食譜，不再遺失任何一道美味。</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 p-3 text-center">
+            <h3>🥬 食材配對</h3>
+            <p>輸入冰箱剩下的食材，系統為您推薦料理。</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 p-3 text-center">
+            <h3>🎁 每日驚喜</h3>
+            <p>每天一道推薦食譜，開啟料理新靈感。</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

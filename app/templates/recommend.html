@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}食材配對推薦 - 食譜收藏夾{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center py-5">
+        <h1 class="fw-bold mb-4">🥬 看看冰箱剩什麼？</h1>
+        <p class="text-muted mb-5">輸入您手邊現有的食材，我們為您尋找適合的食譜。</p>
+        
+        <form action="{{ url_for('recipe.list_recipes') }}" method="GET" class="card p-4 shadow-sm">
+            <div class="mb-4">
+                <label for="ingredients" class="form-label fw-bold">現有食材</label>
+                <input type="text" class="form-control form-control-lg" id="ingredients" name="ingredients" placeholder="例如：雞肉, 蔥, 薑" required>
+                <div class="form-text mt-2">使用逗號或空白分隔多樣食材</div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg">開始配對</button>
+        </form>
+
+        <div class="mt-5">
+            <h5 class="text-muted mb-3">熱門食材：</h5>
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+                <a href="{{ url_for('recipe.list_recipes', ingredients='雞蛋') }}" class="btn btn-sm btn-outline-secondary">雞蛋</a>
+                <a href="{{ url_for('recipe.list_recipes', ingredients='雞肉') }}" class="btn btn-sm btn-outline-secondary">雞肉</a>
+                <a href="{{ url_for('recipe.list_recipes', ingredients='豆腐') }}" class="btn btn-sm btn-outline-secondary">豆腐</a>
+                <a href="{{ url_for('recipe.list_recipes', ingredients='高麗菜') }}" class="btn btn-sm btn-outline-secondary">高麗菜</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}{{ recipe.title }} - 食譜收藏夾{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ url_for('recipe.list_recipes') }}">食譜列表</a></li>
+    <li class="breadcrumb-item active">{{ recipe.title }}</li>
+  </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                    <h1 class="card-title fw-bold">{{ recipe.title }}</h1>
+                    <div>
+                        <a href="{{ url_for('recipe.edit_recipe', recipe_id=recipe.id) }}" class="btn btn-outline-secondary btn-sm">編輯</a>
+                        <form action="{{ url_for('recipe.delete_recipe', recipe_id=recipe.id) }}" method="POST" class="d-inline" onsubmit="return confirm('確定要刪除這道食譜嗎？');">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">刪除</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <h4 class="fw-bold text-primary mb-3">🛒 所需食材</h4>
+                <div class="p-3 bg-light rounded mb-4" style="white-space: pre-line;">
+                    {{ recipe.ingredients }}
+                </div>
+
+                <h4 class="fw-bold text-success mb-3">👩‍🍳 料理步驟</h4>
+                <div class="p-3 border-start border-4 border-success mb-4" style="white-space: pre-line;">
+                    {{ recipe.instructions }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header bg-white fw-bold">資訊</div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">建立於：{{ recipe.created_at.strftime('%Y-%m-%d %H:%M') }}</li>
+                <li class="list-group-item">更新於：{{ recipe.updated_at.strftime('%Y-%m-%d %H:%M') }}</li>
+            </ul>
+        </div>
+        <a href="{{ url_for('main.index') }}" class="btn btn-light w-100 mb-2">回首頁</a>
+    </div>
+</div>
+{% endblock %}
